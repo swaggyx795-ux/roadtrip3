@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>DriveGlobe — SF → Donner Summit</title>
+
+  <!-- CesiumJS via CDN (per Cesium Quickstart) -->
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.136/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.136/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+
+  <link href="/style.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+
+  <div id="hud">
+    <div class="row">
+      <div class="title">DriveGlobe</div>
+      <div id="statusPill" class="pill">Loading…</div>
+    </div>
+
+    <div class="panel">
+      <div class="panelTitle">Route</div>
+
+      <div class="grid2">
+        <label>
+          Start (lat, lon)
+          <div class="inputs2">
+            <input id="startLat" type="number" step="0.000001" />
+            <input id="startLon" type="number" step="0.000001" />
+          </div>
+        </label>
+
+        <label>
+          Destination (lat, lon)
+          <div class="inputs2">
+            <input id="endLat" type="number" step="0.000001" />
+            <input id="endLon" type="number" step="0.000001" />
+          </div>
+        </label>
+      </div>
+
+      <div class="row">
+        <button id="btnLoadRoute">Load route</button>
+        <button id="btnStart" disabled>Start</button>
+        <button id="btnPause" disabled>Pause</button>
+        <button id="btnReset" disabled>Reset</button>
+      </div>
+
+      <div class="grid2">
+        <div class="stat">
+          <div class="k">Speed</div>
+          <div class="v"><span id="speedVal">75</span> mph</div>
+        </div>
+        <div class="stat">
+          <div class="k">Time scale</div>
+          <div class="v">
+            <input id="timeScale" type="range" min="1" max="30" value="1" />
+            <span id="timeScaleVal">1×</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="stat">
+          <div class="k">Trip</div>
+          <div class="v"><span id="tripMiles">—</span> mi</div>
+        </div>
+        <div class="stat">
+          <div class="k">ETA (sim)</div>
+          <div class="v"><span id="etaVal">—</span></div>
+        </div>
+        <div class="stat">
+          <div class="k">Progress</div>
+          <div class="v"><span id="progressVal">—</span>%</div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <label class="stat">
+          <div class="k">MPG (Honda-ish)</div>
+          <div class="v"><input id="mpg" type="number" step="0.1" value="34" /></div>
+        </label>
+        <label class="stat">
+          <div class="k">Gas $/gal</div>
+          <div class="v"><input id="gasPrice" type="number" step="0.01" value="4.00" /></div>
+        </label>
+        <div class="stat">
+          <div class="k">Est. fuel cost</div>
+          <div class="v">$<span id="fuelCost">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panelTitle">Weather (The Weather Company)</div>
+
+      <div class="grid2">
+        <div class="stat">
+          <div class="k">Temp</div>
+          <div class="v"><span id="tempVal">—</span></div>
+        </div>
+        <div class="stat">
+          <div class="k">Feels like</div>
+          <div class="v"><span id="feelsVal">—</span></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="stat">
+          <div class="k">Condition</div>
+          <div class="v"><span id="condVal">—</span></div>
+        </div>
+        <div class="stat">
+          <div class="k">Updated</div>
+          <div class="v"><span id="wxUpdated">—</span></div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="stat">
+          <div class="k">Rain (1h)</div>
+          <div class="v"><span id="rain1h">—</span></div>
+        </div>
+        <div class="stat">
+          <div class="k">Snow (1h)</div>
+          <div class="v"><span id="snow1h">—</span></div>
+        </div>
+        <div class="stat">
+          <div class="k">Snow (24h)</div>
+          <div class="v"><span id="snow24h">—</span></div>
+        </div>
+      </div>
+
+      <div class="note" id="wxNote"></div>
+    </div>
+
+    <div class="panel small">
+      <div class="panelTitle">Tips</div>
+      <ul>
+        <li>Click <b>Load route</b> first (SF → Donner is prefilled).</li>
+        <li>This is a <b>simulation</b>. Roads are real; weather is real-time when you're online.</li>
+        <li>If you're offline, the car keeps moving but weather updates pause.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
